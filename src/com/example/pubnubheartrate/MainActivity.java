@@ -6,12 +6,14 @@ import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private final String PUBNUB_DEFAULT_CHANNEL_NAME="demo";
 	private Pubnub pubnub;
 	private Button mBtnPublishAction;
+	private ImageView mImgVwLaunchBeatMonitor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		initializeLayout();
 		configurePubNubClient();
+		pubnubSubscribe();
 
 
 	}
@@ -38,6 +42,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private void initializeLayout() {
 		mBtnPublishAction=(Button)findViewById(R.id.btnPublishAction);
 		mBtnPublishAction.setOnClickListener(this);
+		mImgVwLaunchBeatMonitor=(ImageView)findViewById(R.id.imgvwLaunchHeartRater);
+		mImgVwLaunchBeatMonitor.setOnClickListener(this);
 
 
 	}
@@ -133,8 +139,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId()==R.id.btnPublishAction){
-			
 			Toast.makeText(MainActivity.this, "publish action", Toast.LENGTH_LONG).show();
+		}if(v.getId()==R.id.imgvwLaunchHeartRater){
+			startActivity(new Intent(MainActivity.this,HeartRateMonitor.class));
 		}
 		
 	}

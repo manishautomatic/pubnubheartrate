@@ -18,6 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Publish" />
+        android:text="Publish-Test" />
+    <ImageView
+        android:id="@+id/imgvwLaunchHeartRater"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:src="@drawable/pbnb_logo"
+        android:layout_alignParentBottom="true"/>
     
 </RelativeLayout>
