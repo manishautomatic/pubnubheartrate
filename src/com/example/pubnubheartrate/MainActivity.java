@@ -8,6 +8,7 @@ import com.pubnub.api.PubnubException;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,7 +113,15 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 
 	private void pubnubPublish(String message){
-
+		Callback callback = new Callback() {
+			   public void successCallback(String channel, Object response) {
+			     Log.d("PUBNUB",response.toString());
+			   }
+			   public void errorCallback(String channel, PubnubError error) {
+			   Log.d("PUBNUB",error.toString());
+			   }
+			 };
+			 pubnub.publish("my_channel", "Free Gift, sign up now" , callback);
 	}
 
 

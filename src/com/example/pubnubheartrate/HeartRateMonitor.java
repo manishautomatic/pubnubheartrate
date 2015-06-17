@@ -2,6 +2,11 @@ package com.example.pubnubheartrate;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pubnub.api.Callback;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
+import com.pubnub.api.PubnubException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -30,6 +36,10 @@ public class HeartRateMonitor extends Activity {
     private static TextView text = null;
 
     private static WakeLock wakeLock = null;
+    private final String PUBNUB_PUBLISH_KEY="pub-c-1b4f0648-a1e6-4aa1-9bae-aebadf76babe";
+	private final String PUBNUB_SUBSCRIBE_KEY="sub-c-e9fadae6-f73a-11e4-af94-02ee2ddab7fe";
+	private final String PUBNUB_DEFAULT_CHANNEL_NAME="demo";
+	private static Pubnub pubnub;
 
     private static int averageIndex = 0;
     private static final int averageArraySize = 4;
@@ -69,6 +79,10 @@ public class HeartRateMonitor extends Activity {
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
+        pubnub = new Pubnub(PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY);
+        configurePubNubClient();
+        pubnubSubscribe();
+        
     }
 
     /**
@@ -191,6 +205,7 @@ public class HeartRateMonitor extends Activity {
                 }
                 int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
                 text.setText(String.valueOf(beatsAvg));
+                dispatchPubNubEvent(String.valueOf(beatsAvg));
                 startTime = System.currentTimeMillis();
                 beats = 0;
             }
@@ -256,4 +271,91 @@ public class HeartRateMonitor extends Activity {
 
         return result;
     }
+    
+    
+    
+    private static void dispatchPubNubEvent(String data){
+    	pubnubPublish(data);
+    }
+
+
+    private void configurePubNubClient() {
+		Callback callback = new Callback() {
+			public void successCallback(String channel, Object response) {
+				System.out.println(response.toString());
+			}
+			public void errorCallback(String channel, PubnubError error) {
+				System.out.println(error.toString());
+			}
+		};
+		pubnub.time(callback);
+
+
+
+	}
+    
+    
+    
+    private void  pubnubSubscribe(){
+		try {
+			pubnub.subscribe(PUBNUB_DEFAULT_CHANNEL_NAME, new Callback() {
+
+				@Override
+				public void connectCallback(String channel, Object message) {
+					System.out.println("SUBSCRIBE : CONNECT on channel:" + channel
+							+ " : " + message.getClass() + " : "
+							+ message.toString());
+				}
+
+				@Override
+				public void disconnectCallback(String channel, Object message) {
+					System.out.println("SUBSCRIBE : DISCONNECT on channel:" + channel
+							+ " : " + message.getClass() + " : "
+							+ message.toString());
+				}
+
+
+				public void reconnectCallback(String channel, Object message) {
+					System.out.println("SUBSCRIBE : RECONNECT on channel:" + channel
+							+ " : " + message.getClass() + " : "
+							+ message.toString());
+				}
+
+				@Override
+				public void successCallback(String channel, Object message) {
+					System.out.println("SUBSCRIBE : " + channel + " : "
+							+ message.getClass() + " : " + message.toString());
+				}
+
+				@Override
+				public void errorCallback(String channel, PubnubError error) {
+					System.out.println("SUBSCRIBE : ERROR on channel " + channel
+							+ " : " + error.toString());
+				}
+
+			}
+					);
+		} catch (PubnubException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    
+    
+    private static void pubnubPublish(String message){
+    	//Toast.makeText(getApplicationContext(), "publishing", Toast.LENGTH_LONG).show();
+		Callback callback = new Callback() {
+			   public void successCallback(String channel, Object response) {
+			     Log.d("PUBNUB",response.toString());
+			   }
+			   public void errorCallback(String channel, PubnubError error) {
+			   Log.d("PUBNUB",error.toString());
+			   }
+			 };
+			 pubnub.publish("heartbeat_alert", "Heart beat alert at :: "+message+" for Test User " , callback);
+	}
+
+
+
 }
+

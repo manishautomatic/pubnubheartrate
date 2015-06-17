@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="150dp"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
