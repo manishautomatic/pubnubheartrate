@@ -26,6 +26,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private Pubnub pubnub;
 	private Button mBtnPublishAction;
 	private ImageView mImgVwLaunchBeatMonitor;
+	private String[] heartRateData ={"80","90","100","110","120","130","140","150","160","170",
+										"180","190","200","210","220"};
+	private String[] patientNameData ={"UserA","UserB","UserC","UserD","UserE","UserF","UserG","UserH","UserI",
+			"UserJ","UserK","UserL","UserM","UserN","UserO"};
+	private int INDEX=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +126,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			   Log.d("PUBNUB",error.toString());
 			   }
 			 };
-			 pubnub.publish("my_channel", "Free Gift, sign up now" , callback);
+			 pubnub.publish("heartbeat_alert", message, callback);
 	}
 
 
@@ -148,10 +153,18 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId()==R.id.btnPublishAction){
-			Toast.makeText(MainActivity.this, "publish action", Toast.LENGTH_LONG).show();
+			processPublish();
 		}if(v.getId()==R.id.imgvwLaunchHeartRater){
-			startActivity(new Intent(MainActivity.this,HeartRateMonitor.class));
+			INDEX=0;
+			//startActivity(new Intent(MainActivity.this,HeartRateMonitor.class));
 		}
 		
+	}
+	
+	private void processPublish(){
+		if(INDEX<14){
+			pubnubPublish("Heart beat alert at :: "+heartRateData[INDEX]+" for "+patientNameData[INDEX]);
+			INDEX++;
+		}
 	}
 }
