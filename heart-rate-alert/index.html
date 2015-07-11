@@ -1,62 +1,94 @@
 <html>
 
+    <head>
+        <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>HealthDataMonitoring-Service</title>
-        <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<link rel="stylesheet" type="text/css" href="css/famous.css" />
-        <link rel="stylesheet" type="text/css" href="css/app.css" />
-		<link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link rel="stylesheet" type="text/css" href="css/famous_styles.css" />
-		
-		<script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
-		<script type="text/javascript">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
 
     var PUBNUB_demo = PUBNUB.init({  // shyam's keys
         publish_key: 'pub-c-1b4f0648-a1e6-4aa1-9bae-aebadf76babe',
         subscribe_key: 'sub-c-e9fadae6-f73a-11e4-af94-02ee2ddab7fe'
     });
-	
-	/*
-	
-	var PUBNUB_demo = PUBNUB.init({ // vipin's keys
-        publish_key: 'pub-c-b34ed129-634d-499e-8480-b0067fab5395',
-        subscribe_key: 'sub-c-7f589ffa-0501-11e5-aefa-0619f8945a4f'
-    }); */
-	
-	/*
-	var PUBNUB_demo = PUBNUB.init({ // rohit's keys
-        publish_key: 'pub-c-fb77c1e2-d3dc-4df0-a0aa-a1fabd1934a8',
-        subscribe_key: 'sub-c-e4b3b60a-14b0-11e5-8577-02ee2ddab7fe'
-    });
-	*/
-	
-	
+	</script>
 
-</script>
-		<script type="text/javascript" src="js/main.js"></script>
-		
-</head>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+        <link href="css/roboto.min.css" rel="stylesheet">
+        <link href="css/material.min.css" rel="stylesheet">
+        <link href="css/ripples.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/app.css">
+
+    </head>
+
+    <body>
+
+        <!-- APP STARTS HERE -->
+
+         <!-- Header -->
+         <div class="jumbotron">
+            <h2>Health Data Monitoring App</h2>
+        </div>
+
+        <!-- input for entering the doctor's ID-->
+
+        <div class="inputs">
+            <input id="doctorID" class="form-control floating-label" placeholder="Enter doctor's Id here">
+        </div>
+
+        <!-- Submit button comes here -->
+        <button onclick="getDoctorId()" type="submit" class="btn btn-primary">Submit</button>
+
+        <!--  The real time data will be displayed here-->
+       <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Real time patient tracker</h3>
+            </div>
+            <div class="panel-body">
+                <p id='alertCountbOX'>0</p>
+            </div>
+        </div>
+
+        <!-- data update -->
+        <div class="well well-sm" id='latestNotificationDiv'>
+            Latest update recieved for pt xyx at 00 beats per minute
+        </div>
+
+        <!-- Fetch History -->
+        <a href="javascript:void(0)" class="btn btn-info btn-raised" onclick="getChannelHistory()">Fetch history</a>
+		<a href="javascript:void(0)" class="btn btn-info btn-red" onclick="clearHistoryView()">Clear history</a>
+
+        <!-- History comes here -->
+        <div class="form-group">
+            <label for="textArea" class="col-lg-2 control-label">Textarea</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" id="historyContainer"></textarea>
+                <span class="help-block">History comes here.</span>
+            </div>
+        </div>
 
 
-<body style="padding:10px">
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<h3 style="text-align:centre; color:red">Doctor's module | realtime patient data tracking ( powered by PubNub)</h3>
+        <script src="js/ripples.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+        </script>
 
-
-<div>REAL TIME PATIENT TRACKER::</div>
-<div id='alertCountbOX' style="padding:10px">0</div>
-<div id='latestNotificationDiv' style="background-color:#AA7539; color:white; padding:10px; width:50%">Latest update recieved for pt xyx at 00 beats per minute</div>
-<button style="width:25%; height:50px" onclick="getChannelHistory()">FETCH RECENT ALERT HISTORY</button>
-</br>
-
-<div id='historyContainer' style="width:50%; height:200px ; background-color:#ffaaaa; color:white; padding:10px; overflow:scroll">history goes here</div>
-
-
-</body>
+    </body>
 
 </html>

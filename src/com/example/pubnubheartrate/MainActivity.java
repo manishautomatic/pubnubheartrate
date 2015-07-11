@@ -7,6 +7,7 @@ import com.pubnub.api.PubnubException;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,10 +33,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private String[] patientNameData ={"UserA","UserB","UserC","UserD","UserE","UserF","UserG","UserH","UserI",
 			"UserJ","UserK","UserL","UserM","UserN","UserO"};
 	private int INDEX=0;
+	private EditText mEdtxtDoctorId;
+	private SharedPreferences mSharedPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mSharedPreferences= MainActivity.this.getSharedPreferences("app_prefs", MODE_PRIVATE);
 		pubnub = new Pubnub(PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY);
 		setContentView(R.layout.activity_main);
 		initializeLayout();
@@ -50,6 +55,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		mBtnPublishAction.setOnClickListener(this);
 		mImgVwLaunchBeatMonitor=(ImageView)findViewById(R.id.imgvwLaunchHeartRater);
 		mImgVwLaunchBeatMonitor.setOnClickListener(this);
+		mEdtxtDoctorId=(EditText)findViewById(R.id.edtxtDoctorID);
+		mEdtxtDoctorId.setText(mSharedPreferences.getString("doc_id", ""));
 
 
 	}
@@ -153,12 +160,19 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId()==R.id.btnPublishAction){
-			processPublish();
+			saveDoctorId();
 		}if(v.getId()==R.id.imgvwLaunchHeartRater){
 			INDEX=0;
-			//startActivity(new Intent(MainActivity.this,HeartRateMonitor.class));
+			startActivity(new Intent(MainActivity.this,HeartRateMonitor.class));
 		}
 		
+	}
+	
+	private void saveDoctorId(){
+		mSharedPreferences
+		.edit()
+		.putString("doc_id", mEdtxtDoctorId.getText().toString())
+		.commit();
 	}
 	
 	private void processPublish(){

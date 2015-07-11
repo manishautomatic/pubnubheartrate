@@ -1,5 +1,8 @@
 package com.example.pubnubheartrate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pubnub.api.Callback;
@@ -8,13 +11,18 @@ import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
+
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,16 +42,18 @@ public class HeartRateMonitor extends Activity {
     private static Camera camera = null;
     private static View image = null;
     private static TextView text = null;
-
+    private static String beatsPerMinuteValue="";
     private static WakeLock wakeLock = null;
     private final String PUBNUB_PUBLISH_KEY="pub-c-1b4f0648-a1e6-4aa1-9bae-aebadf76babe";
 	private final String PUBNUB_SUBSCRIBE_KEY="sub-c-e9fadae6-f73a-11e4-af94-02ee2ddab7fe";
 	private final String PUBNUB_DEFAULT_CHANNEL_NAME="demo";
 	private static Pubnub pubnub;
-
+	private static TextView mTxtVwStopWatch;
     private static int averageIndex = 0;
     private static final int averageArraySize = 4;
     private static final int[] averageArray = new int[averageArraySize];
+    private static String strSavedDoctorID=""; 
+    private static Context parentReference = null;
 
     public static enum TYPE {
         GREEN, RED
@@ -60,7 +70,7 @@ public class HeartRateMonitor extends Activity {
     private static final int[] beatsArray = new int[beatsArraySize];
     private static double beats = 0;
     private static long startTime = 0;
-
+    private static Vibrator v ;
     /**
      * {@inheritDoc}
      */
@@ -68,9 +78,13 @@ public class HeartRateMonitor extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+         parentReference=this;
+        strSavedDoctorID= HeartRateMonitor.this.getSharedPreferences("app_prefs", MODE_PRIVATE)
+        				.getString("doc_id", "---");
         preview = (SurfaceView) findViewById(R.id.preview);
         previewHolder = preview.getHolder();
+        mTxtVwStopWatch=(TextView)findViewById(R.id.txtvwStopWatch);
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -80,10 +94,14 @@ public class HeartRateMonitor extends Activity {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
         pubnub = new Pubnub(PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY);
+        prepareCountDownTimer();
         configurePubNubClient();
         pubnubSubscribe();
         
     }
+    
+    
+    
 
     /**
      * {@inheritDoc}
@@ -99,11 +117,8 @@ public class HeartRateMonitor extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-
         wakeLock.acquire();
-
         camera = Camera.open();
-
         startTime = System.currentTimeMillis();
     }
 
@@ -119,6 +134,7 @@ public class HeartRateMonitor extends Activity {
         camera.setPreviewCallback(null);
         camera.stopPreview();
         camera.release();
+        text.setText("---");
         camera = null;
     }
 
@@ -205,13 +221,21 @@ public class HeartRateMonitor extends Activity {
                 }
                 int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
                 text.setText(String.valueOf(beatsAvg));
+                beatsPerMinuteValue=String.valueOf(beatsAvg);
+                makePhoneVibrate();
                 dispatchPubNubEvent(String.valueOf(beatsAvg));
+                showReadingCompleteDialog();
                 startTime = System.currentTimeMillis();
                 beats = 0;
             }
             processing.set(false);
         }
     };
+    
+    
+    private static void makePhoneVibrate(){
+    	 v.vibrate(500);
+    }
 
     private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
@@ -273,6 +297,20 @@ public class HeartRateMonitor extends Activity {
     }
     
     
+    
+    private static void prepareCountDownTimer(){
+    	mTxtVwStopWatch.setText("---");
+    	new CountDownTimer(10000, 1000) {
+
+    	     public void onTick(long millisUntilFinished) {
+    	    	 mTxtVwStopWatch.setText("seconds remaining: " + (millisUntilFinished) / 1000);
+    	     }
+
+    	     public void onFinish() {
+    	    	 mTxtVwStopWatch.setText("done!");
+    	     }
+    	  }.start();
+    }
     
     private static void dispatchPubNubEvent(String data){
     	pubnubPublish(data);
@@ -352,9 +390,33 @@ public class HeartRateMonitor extends Activity {
 			   Log.d("PUBNUB",error.toString());
 			   }
 			 };
-			 pubnub.publish("heartbeat_alert", "Heart beat alert at :: "+message+" for Test User " , callback);
+			 DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+			 String date = df.format(Calendar.getInstance().getTime());
+			 pubnub.publish(strSavedDoctorID+"heartbeat_alert", "Heart beat alert at :: "+message+" for Test User @ "+date , callback);
 	}
 
+    
+    
+    private static void showReadingCompleteDialog(){
+    	AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
+    	builder.setTitle("PubNub-HeartRate");
+    	builder.setMessage("Reading taken Succesfully at- "+beatsPerMinuteValue+" beats per minute.")
+    	   .setCancelable(false)
+    	   .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+    	       public void onClick(DialogInterface dialog, int id) {
+    	    	 ( (Activity) parentReference).finish();
+    	       }
+    	   })
+    	   .setNegativeButton("Take Another", new DialogInterface.OnClickListener() {
+    	       public void onClick(DialogInterface dialog, int id) {
+    	    	   text.setText("---");
+    	    	   prepareCountDownTimer();
+    	            dialog.cancel();
+    	       }
+    	   });
+    	AlertDialog alert = builder.create();
+    	alert.show();
+    }
 
 
 }
