@@ -47,6 +47,7 @@ function clearHistoryView(){
 
 function getDoctorId(){
 	var doctorId = document.getElementById("doctorID").value;
+	DOCTOR_ID=doctorId;
 	if(doctorId){
 		PUBNUB_demo.subscribe({
     channel: doctorId+'heartbeat_alert',
