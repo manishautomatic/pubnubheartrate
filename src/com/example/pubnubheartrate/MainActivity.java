@@ -6,6 +6,7 @@ import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener {
 
 	private final String PUBNUB_PUBLISH_KEY="pub-c-1b4f0648-a1e6-4aa1-9bae-aebadf76babe";
 	private final String PUBNUB_SUBSCRIBE_KEY="sub-c-e9fadae6-f73a-11e4-af94-02ee2ddab7fe";
@@ -28,10 +29,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private Pubnub pubnub;
 	private Button mBtnPublishAction;
 	private ImageView mImgVwLaunchBeatMonitor;
-	private String[] heartRateData ={"80","90","100","110","120","130","140","150","160","170",
-										"180","190","200","210","220"};
-	private String[] patientNameData ={"UserA","UserB","UserC","UserD","UserE","UserF","UserG","UserH","UserI",
-			"UserJ","UserK","UserL","UserM","UserN","UserO"};
 	private int INDEX=0;
 	private EditText mEdtxtDoctorId;
 	private SharedPreferences mSharedPreferences;
@@ -175,10 +172,5 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		.commit();
 	}
 	
-	private void processPublish(){
-		if(INDEX<14){
-			pubnubPublish("Heart beat alert at :: "+heartRateData[INDEX]+" for "+patientNameData[INDEX]);
-			INDEX++;
-		}
-	}
+	
 }
