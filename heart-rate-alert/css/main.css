@@ -1,24 +1,24 @@
 .header{
-	width:100%;
+	width:70%;
 	height:80px;
 	color:white;
 	background-color:blue;
 	text-align:-webkit-center;
 }
 .summaryTable{
-	width:100%;
+	width:70%;
 	padding:10px;
 	display:none;
 }
 .btnToogleTasks{
-	width:100%;
+	width:70%;
 }
 .black_overlay{
 	display: none;
 	position: absolute;
 	top: 0%;
 	left: 0%;
-	width: 100%;
+	width: 70%;
 	height: 100%;
 	background-color: black;
 	z-index:1001;
