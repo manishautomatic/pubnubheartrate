@@ -9,6 +9,7 @@ Run the portal appliciation under <github.io> link
 
 ##Usage
 Here is how you can use this application for measuring and publishing your heart rate.
+
 1. Open the mobile app and also the portal application
 2. Enter a doctor's ID on the mobile app and tap on submit button. A doctor id is kind of a link to conect the patient to a specific doctor.
 3. Enter the same doctor's id in the portal application and hit the submit button.
