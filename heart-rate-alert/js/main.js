@@ -4,14 +4,7 @@ DOCTOR_ID="";
 
 
 
-function sendasap(){
-	
-	PUBNUB_demo.publish({                                  //30.660009, 76.860564   
-             channel : "heartbeat_alert",
-             message : "{\"ResNo\":\"091999800000\",\"lat\":\"30.660009\",\"lon\":\"76.860564\"}",
-             callback: function(m){ console.log(m) }
-        });
-}
+
 
 function getChannelHistory(){
 	
@@ -48,7 +41,10 @@ function clearHistoryView(){
 function getDoctorId(){
 	var doctorId = document.getElementById("doctorID").value;
 	DOCTOR_ID=doctorId;
+	
 	if(doctorId){
+		$("#historyAnchor").removeClass("disabled");
+	$("#clearHistoryAnchor").removeClass("disabled");
 		PUBNUB_demo.subscribe({
     channel: doctorId+'heartbeat_alert',
     message: function(message){

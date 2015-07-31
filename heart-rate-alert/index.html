@@ -11,7 +11,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script src="https://cdn.pubnub.com/pubnub-dev.js"></script>
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <script type="text/javascript">
 
@@ -54,25 +54,25 @@
                 <h3 class="panel-title">Real time patient tracker</h3>
             </div>
             <div class="panel-body">
-                <p id='alertCountbOX'>0</p>
+                <p id='alertCountbOX'></p>
             </div>
         </div>
 
         <!-- data update -->
         <div class="well well-sm" id='latestNotificationDiv'>
-            Latest update recieved for pt xyx at 00 beats per minute
+            
         </div>
 
         <!-- Fetch History -->
-        <a href="javascript:void(0)" class="btn btn-info btn-raised" onclick="getChannelHistory()">Fetch history</a>
-		<a href="javascript:void(0)" class="btn btn-info btn-red" onclick="clearHistoryView()">Clear history</a>
+        <a id="historyAnchor" href="javascript:void(0)" class="btn btn-info btn-raised  disabled" onclick="getChannelHistory()" enabled="false">Fetch history</a>
+		<a  id="clearHistoryAnchor" href="javascript:void(0)" class="btn btn-info btn-red  disabled " onclick="clearHistoryView()" enabled="false" >Clear history</a>
 
         <!-- History comes here -->
         <div class="form-group">
-            <label for="textArea" class="col-lg-2 control-label">Textarea</label>
+            <label for="textArea" class="col-lg-2 control-label"></label>
             <div class="col-lg-10">
                 <textarea class="form-control" rows="3" id="historyContainer"></textarea>
-                <span class="help-block">History comes here.</span>
+                <span class="help-block"></span>
             </div>
         </div>
 
