@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pubnubheartrate by manishautomatic</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pubnubheartrate</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/manishautomatic/pubnubheartrate">View the Project on GitHub <small>manishautomatic/pubnubheartrate</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/manishautomatic/pubnubheartrate/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/manishautomatic/pubnubheartrate/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/manishautomatic/pubnubheartrate">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="realtime-heartrate-monitoring-on-android-using-pubnub" class="anchor" href="#realtime-heartrate-monitoring-on-android-using-pubnub" aria-hidden="true"><span class="octicon octicon-link"></span></a>Realtime Heartrate monitoring on Android using PubNub</h1>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>This is a prototype healthcare application consisting of a mobile app and a healthcare portal. The mobile app allows users to measure their heart rate using the phone's inbuilt camera and send the readings to the portal application which can be accessed by a doctor in realtime. The communication between the mobile app and portal is achieved via PubNub's realtime data stream network.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install the app by downloading and apk file from the release page.
+Run the portal appliciation under  link</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Here is how you can use this application for measuring and publishing your heart rate.</p>
+
+<ol>
+<li>Open the mobile app and also the portal application</li>
+<li>Enter a doctor's ID on the mobile app and tap on submit button. A doctor id is kind of a link to conect the patient to a specific doctor.</li>
+<li>Enter the same doctor's id in the portal application and hit the submit button.</li>
+<li>Place one finger of your hand holding the phone on the back camera in such a way that the tip of the finger presses against the camera and completely covers it.</li>
+<li>With the other hand, tap on the red PubNub icon on the app to begin heart rate sensing process.</li>
+<li>You will notice that the camera flash will be turned on and a countdown will appear at the bottom of the screen starting from 10 secs.</li>
+<li>Hold your finger on the camera till the countdown ends and the phone vibrates. The app will also alert you for taking another measurement which can either be accepted or rejected. </li>
+<li>At the end the app will send the current reading to portal</li>
+<li>You can check the last reading received at the portal and can also fetch historical readings for the specific doctpr's id</li>
+</ol>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ToDo</h2>
+
+<ol>
+<li>The application does not differenciate between users sending the heart rate reading. All users sending readings to a specific doctor's id are treated as the same user.</li>
+<li>The portal application does not support login functionality.</li>
+<li>The accuracy of heartrate reading taken by the app may tend to be grossly wayward if fingers are not placed properly.</li>
+<li>The app does not have a way to detect if the finger is properly placed at the camera and it is not intelligent enough to detect the absense of finger either. It assumes that the image taken by the camera is that of the finger pressing against it. </li>
+</ol>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/manishautomatic">manishautomatic</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
