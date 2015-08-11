@@ -1,11 +1,11 @@
-#Realtime Heartrate monitoring on Android using PubNub
+#Realtime Heartrate Monitoring on Android using PubNub
 
 ##Introduction
 This is a prototype healthcare application consisting of a mobile app and a healthcare portal. The mobile app allows users to measure their heart rate using the phone's inbuilt camera and send the readings to the portal application which can be accessed by a doctor in realtime. The communication between the mobile app and portal is achieved via PubNub's realtime data stream network.
 
 ##Installation
-Install the app by downloading and apk file from the release page.
-Run the portal appliciation under <github.io> link
+1. Install the app by downloading the apk file from the release page.
+2. Run the portal appliciation under http://manishautomatic.github.io/heartrateweb/
 
 ##Usage
 Here is how you can use this application for measuring and publishing your heart rate.
@@ -18,7 +18,7 @@ Here is how you can use this application for measuring and publishing your heart
 6. You will notice that the camera flash will be turned on and a countdown will appear at the bottom of the screen starting from 10 secs.
 7. Hold your finger on the camera till the countdown ends and the phone vibrates. The app will also alert you for taking another measurement which can either be accepted or rejected. 
 8. At the end the app will send the current reading to portal
-9. You can check the last reading received at the portal and can also fetch historical readings for the specific doctpr's id
+9. You can check the last reading received at the portal and can also fetch historical readings for the specific doctor's id
 
 ##ToDo
 1. The application does not differenciate between users sending the heart rate reading. All users sending readings to a specific doctor's id are treated as the same user.
