@@ -1,4 +1,4 @@
-#Build and Install
+#Build and Install (iOS)
 
 Here are the generic steps for building and installing the app on an iOS device.
 
