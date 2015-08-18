@@ -23,5 +23,5 @@ Here is how you can use this application for measuring and publishing your heart
 ##ToDo
 1. The application does not differenciate between users sending the heart rate reading. All users sending readings to a specific doctor's id are treated as the same user.
 2. The portal application does not support login functionality.
-3. The accuracy of heartrate reading taken by the app may tend to be grossly wayward if fingers are not placed properly.
+3. The accuracy of heartrate reading taken by the app may tend to be grossly wayward if finger is not placed properly.
 4. The app does not have a way to detect if the finger is properly placed at the camera and it is not intelligent enough to detect the absense of finger either. It assumes that the image taken by the camera is that of the finger pressing against it. 
